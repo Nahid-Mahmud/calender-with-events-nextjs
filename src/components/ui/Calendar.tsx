@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CalendarDay } from "./CalendarDay";
+import { WeekRow } from "./WeekRow";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,27 +13,25 @@ interface CalendarProps {
 }
 
 export const Calendar: React.FC<CalendarProps> = ({ events, initialMonth, initialYear }) => {
-  const [month, setMonth] = useState(initialMonth);
-  const [year, setYear] = useState(initialYear);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [month, setMonth] = useState<number>(initialMonth);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [year, setYear] = useState<number>(initialYear);
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = new Date(year, month, 1).getDay();
 
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  const calendarDays = Array(35).fill(null);
+  const calendarDays = Array(42).fill(null);
 
   days.forEach((day, index) => {
     calendarDays[index + firstDayOfMonth] = day;
   });
 
-  const getEventsForDate = (date: Date) => {
-    return events.filter(
-      (event) =>
-        event.date.getDate() === date.getDate() &&
-        event.date.getMonth() === date.getMonth() &&
-        event.date.getFullYear() === date.getFullYear()
-    );
-  };
+  const weeks = [];
+  for (let i = 0; i < 6; i++) {
+    weeks.push(calendarDays.slice(i * 7, (i + 1) * 7));
+  }
 
   const goToPreviousMonth = () => {
     if (month === 0) {
@@ -86,18 +84,16 @@ export const Calendar: React.FC<CalendarProps> = ({ events, initialMonth, initia
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-2 mb-2">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div key={day} className="font-bold text-center">
             {day}
           </div>
         ))}
-        {calendarDays.map((day, index) => (
-          <div key={index}>
-            {day !== null && (
-              <CalendarDay date={new Date(year, month, day)} events={getEventsForDate(new Date(year, month, day))} />
-            )}
-          </div>
+      </div>
+      <div className="space-y-2">
+        {weeks.map((week, index) => (
+          <WeekRow key={index} days={week} events={events} year={year} month={month} />
         ))}
       </div>
     </div>

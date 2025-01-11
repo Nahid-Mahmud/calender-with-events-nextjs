@@ -1,20 +1,31 @@
 import React from "react";
-import { Event } from "./sampleEvents";
 
 interface CalendarDayProps {
-  date: Date;
-  events: Event[];
+  date: Date | null;
+  isFirstDayOfMonth: boolean;
 }
 
-export const CalendarDay: React.FC<CalendarDayProps> = ({ date, events }) => {
+export const CalendarDay: React.FC<CalendarDayProps> = ({ date, isFirstDayOfMonth }) => {
+  console.log(isFirstDayOfMonth);
+  const currentDate = new Date();
+  if (!date) {
+    return <div className="border p-2 h-24"></div>;
+  }
+
   return (
-    <div className="border p-2 h-32 overflow-y-auto">
+    <div
+      className={`border p-2 h-32 
+    ${
+      // if the is matched of current date then color it
+      date.getDate() === currentDate.getDate() &&
+      date.getMonth() === currentDate.getMonth() &&
+      date.getFullYear() === currentDate.getFullYear()
+        ? "bg-blue-200"
+        : ""
+    }
+    `}
+    >
       <div className="font-bold mb-1">{date.getDate()}</div>
-      {events.map((event) => (
-        <div key={event.id} className="text-xs bg-blue-100 p-1 mb-1 rounded">
-          {event.name}
-        </div>
-      ))}
     </div>
   );
 };
