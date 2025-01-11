@@ -30,7 +30,10 @@ export const Calendar: React.FC<CalendarProps> = ({ events, initialMonth, initia
 
   const weeks = [];
   for (let i = 0; i < 6; i++) {
-    weeks.push(calendarDays.slice(i * 7, (i + 1) * 7));
+    const week = calendarDays.slice(i * 7, (i + 1) * 7);
+    if (week.some((day) => day !== null)) {
+      weeks.push(week);
+    }
   }
 
   const goToPreviousMonth = () => {

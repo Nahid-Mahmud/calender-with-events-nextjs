@@ -9,12 +9,12 @@ export const CalendarDay: React.FC<CalendarDayProps> = ({ date, isFirstDayOfMont
   console.log(isFirstDayOfMonth);
   const currentDate = new Date();
   if (!date) {
-    return <div className="border p-2 h-24"></div>;
+    return <div className="border p-2 h-36"></div>;
   }
 
   return (
     <div
-      className={`border p-2 h-32 
+      className={`border p-2 h-36 
     ${
       // if the is matched of current date then color it
       date.getDate() === currentDate.getDate() &&
