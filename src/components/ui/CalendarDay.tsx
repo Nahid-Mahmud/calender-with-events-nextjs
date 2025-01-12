@@ -9,7 +9,7 @@ export const CalendarDay: React.FC<CalendarDayProps> = ({ date, isFirstDayOfMont
   console.log(isFirstDayOfMonth);
   const currentDate = new Date();
   if (!date) {
-    return <div className="border p-2 h-36"></div>;
+    return <div className=" p-2 h-36"></div>;
   }
 
   return (
